@@ -21,6 +21,7 @@ client = Client(intents=intents)
 
 # SPACE FOR THE DISCORD TOKEN I CANNOT SHOW
 
+
 # define the commands
 commands="My commands:\n* !pokemon pokemon_name -> to get a image of the pokemon \n* !stats pokemon_name -> to get the base stats of the pokemon \n* !abilities pokemon_name -> to get the abilities of the pokemon \n* !base_experience pokemon_name -> to get the base experience of the pokemon \n* !moves pokemon_name -> to get the possible moves of the pokemon \n* !types pokemon_name -> to get the types of the pokemon  and his strenghs and weaknesses"
 
