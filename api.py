@@ -65,26 +65,27 @@ class Pokemon:
     # method to get the formatted moves of the pokemon in a list
     def format_moves(self):
         response = requests.get(self.api_url)
-        if response.status_code == 200: # If the request was successful
+        if response.status_code == 200:
             try:
                 data = response.json()
-                # print(data)
                 moves = data["moves"]
                 grouped_moves = {}
-                
-                for move in moves:
-                    version_group = move['version_group_details'][0]['version_group']['name']
-                    if version_group not in grouped_moves:
-                        grouped_moves[version_group] = []
-                    grouped_moves[version_group].append(move['move']['name'])
 
-                formatted_moves = "\n".join([f"- {move} ({version_group})" for version_group, moves in grouped_moves.items() for move in moves])
-                return formatted_moves 
-            except json.decoder.JSONDecodeError: # If the response is not JSON
-                data = None
-        else:                        # If the request was not successful
-                data = None
-                return data
+                for move in moves:
+                    version_groups = move['version_group_details']
+                    for version_group in version_groups:
+                        group_name = version_group['version_group']['name']
+                        move_name = move['move']['name']
+                        if group_name not in grouped_moves:
+                            grouped_moves[group_name] = set()  # Use a set to avoid duplicate moves
+                        grouped_moves[group_name].add(move_name)
+
+                formatted_moves = "\n".join([f"Gruppo: {group_name}\n- {', '.join(moves)} (level-up)" for group_name, moves in grouped_moves.items()])
+                return formatted_moves
+            except json.decoder.JSONDecodeError:
+                return "Errore nella decodifica della risposta JSON"
+        else:
+            return "Errore nella richiesta API"
         
     # method to get a random image of the pokemon
     def get_random_sprite(self):
