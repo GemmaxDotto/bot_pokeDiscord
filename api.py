@@ -24,7 +24,7 @@ class Pokemon:
                 # print(data)
                 abilities = data["abilities"]
                 abilities_list = [ability["ability"]["name"] for ability in abilities] # Extract the names of the abilities
-                return "* " + "\n* ".join(abilities_list)
+                return "\n* " + "\n* ".join(abilities_list)
             except json.decoder.JSONDecodeError: # If the response is not JSON
                 data = None
         else:                           # If the request was not successful
@@ -80,7 +80,7 @@ class Pokemon:
                             grouped_moves[group_name] = set()  # Use a set to avoid duplicate moves
                         grouped_moves[group_name].add(move_name)
 
-                formatted_moves = "\n".join([f"Gruppo: {group_name}\n- {', '.join(moves)} (level-up)" for group_name, moves in grouped_moves.items()])
+                formatted_moves = "\n".join([f"Gruppo {group_name}:\n- {', '.join(moves)}" for group_name, moves in grouped_moves.items()])
                 return formatted_moves
             except json.decoder.JSONDecodeError:
                 return "Errore nella decodifica della risposta JSON"
@@ -130,7 +130,7 @@ class Pokemon:
                 data = response.json()
                 # print(data)
                 types = data["types"] 
-                types_name = [type_info["type"]["name"] for type_info in types] # Extract the name of types
+                types_name = "\n".join([type_info["type"]["name"] for type_info in types]) # Extract the name of types
                 types_url = [type_info["type"]["url"] for type_info in types] # Extract the urls of the types
                 response = requests.get(types_url[0])
                 data = response.json()
@@ -141,7 +141,7 @@ class Pokemon:
                 half_damage_to = "\n".join([type_info["name"] for type_info in damage_relations["half_damage_to"]]) # Extract the half damage to
                 no_damage_from = "\n".join([type_info["name"] for type_info in damage_relations["no_damage_from"]]) # Extract the no damage from
                 no_damage_to = "\n".join([type_info["name"] for type_info in damage_relations["no_damage_to"]]) # Extract the no damage to
-                return f"Types for {self.name}:\n* {types_name}\n* Double damage from:\n{double_damage_from}\n* Double damage to:\n{double_damage_to}\n* Half damage from:\n{half_damage_from}\n* Half damage to:\n{half_damage_to}\n* No damage from:\n{no_damage_from}\n* No damage to:\n{no_damage_to}"
+                return f"\n* Types for {self.name}:\n {types_name}\n* Double damage from:\n{double_damage_from}\n* Double damage to:\n{double_damage_to}\n* Half damage from:\n{half_damage_from}\n* Half damage to:\n{half_damage_to}\n* No damage from:\n{no_damage_from}\n* No damage to:\n{no_damage_to}"
             except json.decoder.JSONDecodeError: # If the response is not JSON
                 data = None 
         else:                      # If the request was not successful
